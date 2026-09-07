@@ -407,6 +407,7 @@ body {
 .eng-glow { background: linear-gradient(90deg, #6366f1, #a855f7); }
 .guide-glow { background: linear-gradient(90deg, #f59e0b, #ef4444); }
 .rocky-glow { background: linear-gradient(90deg, #ec4899, #f43f5e); }
+.crypto-glow { background: linear-gradient(90deg, #f59e0b, #eab308); }
 .hub-glow { background: linear-gradient(90deg, #38bdf8, #10b981); }
 
 .card-header {
@@ -432,6 +433,7 @@ body {
 .eng-icon { background: rgba(99, 102, 241, 0.12); color: #818cf8; }
 .guide-icon { background: rgba(245, 158, 11, 0.12); color: #fbbf24; }
 .rocky-icon { background: rgba(244, 63, 94, 0.12); color: #fb7185; }
+.crypto-icon { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
 .hub-icon { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
 
 .card-badges {
