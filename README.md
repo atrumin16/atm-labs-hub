@@ -37,9 +37,14 @@ The central directory and navigation portal for the services, tools, and technic
 
 ```
 atm-labs-hub/
-├── 404.html             # Diagnostic 404 handler matching corporate styling
-├── index.html           # Main service directory with client-side search
-├── styles.css           # Design tokens, acrylic layering, and responsive layout
+├── .github/
+│   └── workflows/
+│       └── ci.yml       # Asset integrity and build verification
+├── public/              # Static web directory deployed to Cloudflare Pages
+│   ├── 404.html         # Diagnostic 404 handler matching corporate styling
+│   ├── index.html       # Main service directory with client-side search
+│   └── styles.css       # Design tokens, acrylic layering, and responsive layout
+├── package.json         # Project manifest and deployment scripts
 └── wrangler.toml        # Cloudflare Pages deployment configuration
 ```
 
