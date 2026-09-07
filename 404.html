@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">404 Diagnóstico Perimetral | ATM Software Labs</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#080c14">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%230078d4'/><text x='50' y='68' font-size='55' font-family='sans-serif' font-weight='800' fill='white' text-anchor='middle'>A</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700;800&family=Cascadia+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #080c14;
+      --card-bg: rgba(15, 22, 36, 0.78);
+      --card-hover: rgba(22, 32, 52, 0.88);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(0, 120, 212, 0.45);
+      --text-main: #ffffff;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --atm-blue: #0078d4;
+      --atm-blue-hover: #106ebe;
+      --atm-cyan: #38bdf8;
+      --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.12);
+      --success: #107c41;
+      --font-ui: 'Segoe UI', 'Aptos', -apple-system, BlinkMacSystemFont, 'Inter', Roboto, sans-serif;
+      --font-mono: 'Cascadia Code', 'Consolas', 'JetBrains Mono', monospace;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--font-ui);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient Mica Backdrop */
+    .bg-ambient {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 15%, rgba(0, 120, 212, 0.09) 0%, transparent 50%),
+        radial-gradient(circle at 85% 75%, rgba(16, 124, 65, 0.06) 0%, transparent 45%),
+        radial-gradient(circle at 15% 85%, rgba(56, 189, 248, 0.06) 0%, transparent 45%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Top Utility Bar */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8, 12, 20, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.5rem;
+    }
+
+    .top-bar-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #0078d4, #0284c7);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0, 120, 212, 0.35);
+    }
+
+    .brand-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-service {
+      font-size: 0.725rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .edge-status-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.3rem 0.65rem;
+      background: rgba(16, 124, 65, 0.12);
+      border: 1px solid rgba(16, 124, 65, 0.3);
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #4ade80;
+    }
+
+    .edge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+    }
+
+    /* Main Diagnostic Layout */
+    .diag-main {
+      flex: 1;
+      max-width: 920px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Central Diagnostic Card */
+    .diag-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 16px 40px -4px rgba(0, 0, 0, 0.5);
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .diag-card-stripe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ef4444, #f97316);
+    }
+
+    .diag-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .error-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.3rem 0.75rem;
+      background: var(--danger-bg);
+      border: 1px solid rgba(239, 68, 68, 0.28);
+      border-radius: var(--radius-sm);
+      color: #f87171;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .error-tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--danger);
+    }
+
+    .routing-layer-badge {
+      font-family: var(--font-mono);
+      font-size: 0.725rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.25rem 0.6rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .diag-title {
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.75rem;
+      line-height: 1.25;
+    }
+
+    .diag-desc {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.75rem;
+    }
+
+    .diag-desc code {
+      font-family: var(--font-mono);
+      color: var(--atm-cyan);
+      background: rgba(0, 120, 212, 0.12);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 120, 212, 0.25);
+    }
+
+    /* Console Inspector Box (Fluent Style) */
+    .telemetry-console {
+      background: rgba(8, 12, 20, 0.9);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .console-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.725rem;
+      color: var(--text-muted);
+    }
+
+    .console-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .c-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .console-body {
+      padding: 1rem 1.25rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.775rem;
+    }
+
+    .console-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .console-label {
+      color: var(--text-muted);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .console-val {
+      color: #e2e8f0;
+      word-break: break-all;
+    }
+
+    .console-val.cyan { color: var(--atm-cyan); }
+    .console-val.orange { color: #fb923c; }
+    .console-val.green { color: #4ade80; }
+
+    /* Action Buttons */
+    .diag-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--atm-blue);
+      color: #fff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.65rem 1.35rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 120, 212, 0.4);
+    }
+
+    .btn-primary:hover {
+      background: var(--atm-blue-hover);
+      box-shadow: 0 4px 14px rgba(0, 120, 212, 0.55);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.65rem 1.15rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.09);
+      color: #fff;
+    }
+
+    /* Active Services Navigation Grid */
+    .services-nav {
+      margin-top: 2.5rem;
+    }
+
+    .services-nav-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .services-nav-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+    }
+
+    .services-nav-sub {
+      font-size: 0.725rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.85rem;
+    }
+
+    .service-tile {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+
+    .service-tile:hover {
+      background: var(--card-hover);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .service-tile-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.4rem;
+    }
+
+    .service-tile-domain {
+      font-family: var(--font-mono);
+      font-size: 0.775rem;
+      font-weight: 600;
+      color: var(--atm-cyan);
+    }
+
+    .service-tile-status {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+
+    .service-tile-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Footer */
+    .diag-footer {
+      max-width: 920px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .diag-footer-domain {
+      font-family: var(--font-mono);
+      color: var(--atm-cyan);
+    }
+
+    @media (max-width: 768px) {
+      .diag-card { padding: 1.75rem 1.25rem; }
+      .console-body { grid-template-columns: 1fr; gap: 0.75rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .diag-actions { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-secondary { justify-content: center; }
+      .diag-footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-ambient" aria-hidden="true"></div>
+
+  <!-- Top Utility Bar -->
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <a href="https://labs.trujillomingorance.com" class="brand-group" title="ATM Software Labs - Portal Central">
+        <div class="brand-badge">A</div>
+        <div class="brand-meta">
+          <span class="brand-name">ATM Software Labs</span>
+          <span class="brand-service">Edge Gateway &amp; Diagnostics</span>
+        </div>
+      </a>
+
+      <div class="edge-status-pill" title="Red Anycast de Cloudflare activa">
+        <span class="edge-dot"></span>
+        <span>Cloudflare Anycast • Normal</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="diag-main">
+
+    <!-- Central Diagnostic Card -->
+    <article class="diag-card">
+      <div class="diag-card-stripe"></div>
+
+      <div class="diag-top">
+        <div class="error-tag" id="errorTag">
+          <span class="error-tag-dot"></span>
+          <span id="badgeText">HTTP 404 • SUBDOMINIO NO ASIGNADO</span>
+        </div>
+        <span class="routing-layer-badge">Capa 7 Edge Routing</span>
+      </div>
+
+      <h1 class="diag-title" id="errorTitle">Subdominio no asignado en el perímetro</h1>
+      <p class="diag-desc" id="errorDesc">
+        El host <code id="hostDisplay">trujillomingorance.com</code> resolvió correctamente mediante el registro DNS comodín (*), pero actualmente no se encuentra mapeado a ningún servicio o aplicación de la red.
+      </p>
+
+      <!-- Technical Telemetry Console -->
+      <div class="telemetry-console">
+        <div class="console-header">
+          <div class="console-dots">
+            <span class="c-dot"></span>
+            <span class="c-dot"></span>
+            <span class="c-dot"></span>
+          </div>
+          <span>INSPECCIÓN TÉCNICA DEL PERÍMETRO</span>
+        </div>
+        <div class="console-body">
+          <div class="console-row">
+            <span class="console-label">Host Solicitado</span>
+            <span class="console-val cyan" id="teleHost">-</span>
+          </div>
+          <div class="console-row">
+            <span class="console-label">Ruta Solicitada</span>
+            <span class="console-val" id="telePath">-</span>
+          </div>
+          <div class="console-row">
+            <span class="console-label">Resolución DNS</span>
+            <span class="console-val green">*.trujillomingorance.com &rarr; Proxied</span>
+          </div>
+          <div class="console-row">
+            <span class="console-label">Estado de Enrutamiento</span>
+            <span class="console-val orange" id="teleRouting">Target Unmapped (HTTP 404)</span>
+          </div>
+          <div class="console-row">
+            <span class="console-label">Enrutador Edge</span>
+            <span class="console-val">Cloudflare Global Anycast (MAD POP)</span>
+          </div>
+          <div class="console-row">
+            <span class="console-label">Protocolo de Transporte</span>
+            <span class="console-val">HTTPS / TLS 1.3 Preloaded</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="diag-actions">
+        <a href="https://labs.trujillomingorance.com" class="btn-primary">
+          <span>Ir a ATM Labs Hub (Portal Central)</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <button id="btnCopyDiag" class="btn-secondary" onclick="copyDiagnostics()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <span id="copyBtnText">Copiar diagnóstico</span>
+        </button>
+        <a href="javascript:history.back()" class="btn-secondary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+          <span>Volver atrás</span>
+        </a>
+      </div>
+    </article>
+
+    <!-- Active Services Navigation Grid -->
+    <section class="services-nav">
+      <div class="services-nav-header">
+        <h2 class="services-nav-title">Servicios y Subdominios Activos</h2>
+        <span class="services-nav-sub">6 endpoints disponibles</span>
+      </div>
+
+      <div class="services-grid">
+        <a href="https://labs.trujillomingorance.com" class="service-tile">
+          <div class="service-tile-top">
+            <span class="service-tile-domain">labs.</span>
+            <span class="service-tile-status"></span>
+          </div>
+          <span class="service-tile-desc">Portal Central ATM Labs &amp; Directorio</span>
+        </a>
+
+        <a href="https://ai.trujillomingorance.com" class="service-tile">
+          <div class="service-tile-top">
+            <span class="service-tile-domain">ai.</span>
+            <span class="service-tile-status"></span>
+          </div>
+          <span class="service-tile-desc">Trujillo AI Studio (Groq LPU Multimodal)</span>
+        </a>
+
+        <a href="https://focusguard.trujillomingorance.com" class="service-tile">
+          <div class="service-tile-top">
+            <span class="service-tile-domain">focusguard.</span>
+            <span class="service-tile-status"></span>
+          </div>
+          <span class="service-tile-desc">FocusGuard SaaS &amp; Zero-Trust DNS Shield</span>
+        </a>
+
+        <a href="https://guides.trujillomingorance.com" class="service-tile">
+          <div class="service-tile-top">
+            <span class="service-tile-domain">guides.</span>
+            <span class="service-tile-status"></span>
+          </div>
+          <span class="service-tile-desc">Engineering Guides &amp; Arquitecturas</span>
+        </a>
+
+        <a href="https://alberto.trujillomingorance.com" class="service-tile">
+          <div class="service-tile-top">
+            <span class="service-tile-domain">alberto.</span>
+            <span class="service-tile-status"></span>
+          </div>
+          <span class="service-tile-desc">Portfolio Profesional &amp; Trayectoria</span>
+        </a>
+
+        <a href="https://rocky.trujillomingorance.com" class="service-tile">
+          <div class="service-tile-top">
+            <span class="service-tile-domain">rocky.</span>
+            <span class="service-tile-status"></span>
+          </div>
+          <span class="service-tile-desc">Sitio Web de Rocky &amp; Ficha Microchip</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="diag-footer">
+    <span>&copy; 2026 Alberto Trujillo Mingorance. Todos los derechos reservados.</span>
+    <span class="diag-footer-domain">ATM Software Labs &bull; trujillomingorance.com</span>
+  </footer>
+
+  <script>
+    (function() {
+      try {
+        const host = window.location.hostname || 'trujillomingorance.com';
+        const path = window.location.pathname || '/';
+        document.getElementById('teleHost').textContent = host;
+        document.getElementById('hostDisplay').textContent = host;
+        document.getElementById('telePath').textContent = path;
+
+        const isKnownSubdomain = ['labs', 'ai', 'groq', 'focusguard', 'guides', 'guias', 'alberto', 'rocky', 'www'].some(s => host.startsWith(s + '.'));
+        const isSubdomain = host.endsWith('.trujillomingorance.com') && !isKnownSubdomain;
+
+        if (isSubdomain) {
+          document.getElementById('pageTitle').textContent = 'Subdominio No Asignado | ATM Software Labs';
+          document.getElementById('errorTitle').textContent = 'Subdominio no asignado en el perímetro';
+          document.getElementById('badgeText').textContent = 'DNS WILDCARD • SUBDOMINIO NO ASIGNADO';
+          document.getElementById('teleRouting').textContent = 'DNS Comodín Activo &bull; Sin servicio mapeado';
+        } else {
+          document.getElementById('pageTitle').textContent = '404 Ruta No Encontrada | ATM Software Labs';
+          document.getElementById('errorTitle').textContent = 'Página o Recurso No Encontrado';
+          document.getElementById('badgeText').textContent = 'HTTP 404 • RECURSO INEXISTENTE';
+          document.getElementById('errorDesc').innerHTML = 'La ruta solicitada <code>' + path + '</code> no existe en el servidor <code>' + host + '</code>.';
+          document.getElementById('teleRouting').textContent = 'Ruta no encontrada en el origen';
+        }
+      } catch(e) {}
+    })();
+
+    function copyDiagnostics() {
+      const host = document.getElementById('teleHost')?.textContent || window.location.hostname;
+      const path = document.getElementById('telePath')?.textContent || window.location.pathname;
+      const text = 'Diagnóstico Perimetral ATM Software Labs:\nHost: ' + host + '\nRuta: ' + path + '\nEstado: HTTP 404\nEdge: Cloudflare Anycast (Madrid MAD POP)\nFecha: ' + new Date().toISOString();
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtnText');
+        if (btn) {
+          btn.textContent = '¡Copiado al portapapeles!';
+          setTimeout(() => { btn.textContent = 'Copiar diagnóstico'; }, 2500);
+        }
+      }).catch(() => {});
+    }
+  </script>
+</body>
+</html>
