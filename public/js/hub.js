@@ -78,7 +78,10 @@
     card.appendChild(body);
 
     var footer = h('div', 'card-footer');
-    footer.appendChild(h('span', 'subdomain-alt', project.alt || ''));
+    var alt = professionalHost(project.alt);
+    var domain = professionalHost(project.domain);
+    if (alt && alt !== domain) footer.appendChild(h('span', 'subdomain-alt', alt));
+    else footer.appendChild(h('span', 'subdomain-alt'));
     var launch = h('a', 'btn-launch' + (project.current ? ' secondary' : ''));
     launch.href = project.current ? '#top' : (project.url || '#');
     if (!project.current) {
@@ -89,6 +92,18 @@
     footer.appendChild(launch);
     card.appendChild(footer);
     return card;
+  }
+
+  function professionalHost(value) {
+    if (!value) return '';
+    var host = String(value).replace(/^https?:\/\//i, '').split('/')[0].toLowerCase();
+    if (!host || host.indexOf('pages.dev') !== -1) return '';
+    if (host === 'trujillomingorance.com' || host.slice(-23) === '.trujillomingorance.com') return host;
+    return '';
+  }
+
+  function isOwnProject(project) {
+    return !!(professionalHost(project && project.domain) || professionalHost(project && project.url));
   }
 
   function matches(project) {
@@ -123,7 +138,7 @@
       var res = await fetch('/api/projects', { headers: { Accept: 'application/json' } });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       var data = await res.json();
-      state.projects = Array.isArray(data.projects) ? data.projects : [];
+      state.projects = (Array.isArray(data.projects) ? data.projects : []).filter(isOwnProject);
     } catch (err) {
       state.projects = [];
     }

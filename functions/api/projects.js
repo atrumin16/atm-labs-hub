@@ -24,7 +24,7 @@ const CATALOG = {
     description: 'Humanizador de texto 99.9% humano y corrector editorial. Proxy streaming en el Edge con calibración de estilo.',
     url: 'https://rewrite.trujillomingorance.com',
     domain: 'rewrite.trujillomingorance.com',
-    alt: 'rewrite-ai-azu.pages.dev',
+    alt: '',
     category: 'ai',
     keywords: 'rewrite humanizer anti-ia turnitin groq',
     stack: ['Pages Functions', 'Groq LPU', 'Workers AI'],
@@ -48,7 +48,7 @@ const CATALOG = {
     description: 'Perfil técnico de Alberto Trujillo. SysAdmin, seguridad, proyectos y contacto.',
     url: 'https://alberto.trujillomingorance.com',
     domain: 'alberto.trujillomingorance.com',
-    alt: 'alberto-portfolio.pages.dev',
+    alt: '',
     category: 'engineering',
     keywords: 'portfolio alberto cv sysadmin devops',
     stack: ['Cloudflare Pages', 'Vanilla JS', 'Security Eng'],
@@ -60,7 +60,7 @@ const CATALOG = {
     description: 'Runbooks de producción, arquitecturas Edge y guías de sistemas.',
     url: 'https://guides.trujillomingorance.com',
     domain: 'guides.trujillomingorance.com',
-    alt: 'trujillo-guides.pages.dev',
+    alt: '',
     category: 'engineering',
     keywords: 'guias guides documentacion devops cloudflare',
     stack: ['Technical Docs', 'DevOps', 'Edge'],
@@ -72,7 +72,7 @@ const CATALOG = {
     description: 'Ficha veterinaria, galería táctil, microchip y vCard de emergencia.',
     url: 'https://rocky.trujillomingorance.com',
     domain: 'rocky.trujillomingorance.com',
-    alt: 'rocky-setter.pages.dev',
+    alt: '',
     category: 'apps',
     keywords: 'rocky setter perro veterinaria microchip',
     stack: ['Pages Functions', 'vCard', 'Touch UI'],
@@ -84,7 +84,7 @@ const CATALOG = {
     description: 'Directorio vivo del ecosistema. Autodescubrimiento de proyectos en Cloudflare Pages.',
     url: 'https://labs.trujillomingorance.com',
     domain: 'labs.trujillomingorance.com',
-    alt: 'atm-labs-hub.pages.dev',
+    alt: 'trujillomingorance.com',
     category: 'engineering',
     keywords: 'labs atm hub central directorio',
     stack: ['Central Hub', 'Edge Gateway', 'Pages Functions'],
@@ -97,61 +97,71 @@ const CATALOG = {
     description: 'Enrutador del dominio raíz y telemetría 404 para subdominios no asignados.',
     url: 'https://trujillomingorance.com',
     domain: 'trujillomingorance.com',
-    alt: 'domain-root-2r5.pages.dev',
+    alt: '',
     category: 'engineering',
     keywords: 'root apex gateway dns wildcard',
     stack: ['Pages', 'DNS', 'Edge'],
     cta: 'Abrir raíz'
   },
-  bitpulse: {
-    id: 'bitpulse',
-    title: 'BitPulse — Bitcoin Command Center',
-    description: 'Telemetría de mempool, comisiones sat/vB, halving y Fear & Greed. Sin backend.',
-    url: 'https://atrumin16.github.io/BitPulse/',
-    domain: 'atrumin16.github.io/BitPulse',
-    alt: 'GitHub Pages',
-    category: 'apps',
-    keywords: 'bitpulse bitcoin mempool crypto dashboard',
-    stack: ['Mempool API', 'Vanilla JS', 'Zero-Backend'],
-    cta: 'Abrir Dashboard'
-  }
 };
 
 const HIDDEN = new Set(['neurolock', 'manual-de-bloqueo']);
 
+function ownHost(value) {
+  if (!value) return '';
+  const host = String(value).replace(/^https?:\/\//i, '').split('/')[0].toLowerCase();
+  if (!host || host.includes('pages.dev') || /\.dev$/i.test(host)) return '';
+  if (host === 'trujillomingorance.com' || host.endsWith('.trujillomingorance.com')) return host;
+  return '';
+}
+
 function pickCustomDomain(project) {
   const domains = Array.isArray(project.domains) ? project.domains : [];
-  const custom = domains.find((d) => typeof d === 'string' && d.includes('trujillomingorance.com'));
-  if (custom) return custom;
-  const first = domains.find((d) => typeof d === 'string');
-  return first || '';
+  for (const d of domains) {
+    const host = ownHost(d);
+    if (host) return host;
+  }
+  return '';
+}
+
+function polish(item) {
+  if (!item) return null;
+  const domain = ownHost(item.domain || item.url);
+  if (!domain) return null;
+  const alt = ownHost(item.alt);
+  return Object.assign({}, item, {
+    domain,
+    url: item.url && ownHost(item.url) ? item.url : ('https://' + domain),
+    alt: alt && alt !== domain ? alt : ''
+  });
 }
 
 function mergeProject(cfProject) {
   const name = cfProject.name || '';
   if (HIDDEN.has(name)) return null;
   const known = CATALOG[name] || {};
-  const domain = known.domain || pickCustomDomain(cfProject);
-  const url = known.url || (domain ? 'https://' + domain : '');
-  if (!url) return null;
-  return {
+  const domain = ownHost(known.domain) || pickCustomDomain(cfProject);
+  if (!domain) return null;
+  return polish({
     id: name,
     title: known.title || name,
-    description: known.description || (cfProject.latest_deployment && cfProject.latest_deployment.url) || 'Proyecto en Cloudflare Pages.',
-    url,
-    domain: domain || name,
-    alt: known.alt || (name + '.pages.dev'),
+    description: known.description || 'Servicio del ecosistema trujillomingorance.com.',
+    url: known.url || ('https://' + domain),
+    domain,
+    alt: known.alt || '',
     category: known.category || 'apps',
     keywords: known.keywords || name,
     stack: known.stack || ['Cloudflare Pages'],
     cta: known.cta || 'Abrir',
     current: !!known.current,
     source: 'cloudflare'
-  };
+  });
 }
 
 function fallbackCatalog() {
-  return Object.values(CATALOG).map((item) => Object.assign({ source: 'fallback' }, item));
+  return Object.values(CATALOG).map(polish).filter(Boolean).map(function (item) {
+    return Object.assign({ source: 'fallback' }, item);
+  });
 }
 
 function jsonResponse(body, status) {
@@ -168,7 +178,7 @@ function jsonResponse(body, status) {
 export async function onRequestGet(context) {
   const { request, env } = context;
   const cache = caches.default;
-  const cacheKey = new Request(new URL(request.url), { method: 'GET' });
+  const cacheKey = new Request(new URL('/api/projects?v=own-domain', request.url), { method: 'GET' });
 
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
@@ -189,10 +199,13 @@ export async function onRequestGet(context) {
         const data = await res.json();
         const rows = Array.isArray(data.result) ? data.result : [];
         const mapped = rows.map(mergeProject).filter(Boolean);
-        const extras = [CATALOG.bitpulse, CATALOG['trujillo-ai-studio']].filter(Boolean);
+        const extras = [CATALOG['trujillo-ai-studio']].map(polish).filter(Boolean);
         const seen = new Set(mapped.map((p) => p.id));
         extras.forEach((item) => {
-          if (item && !seen.has(item.id)) mapped.push(Object.assign({ source: 'catalog' }, item));
+          if (item && !seen.has(item.id) && !seen.has(item.domain)) {
+            mapped.push(Object.assign({ source: 'catalog' }, item));
+            seen.add(item.id);
+          }
         });
         if (mapped.length) {
           projects = mapped;
