@@ -1,5 +1,32 @@
 (function () {
   'use strict';
+
+  function applyTheme(theme) {
+    var next = theme === 'light' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('trujillo_theme', next); } catch (e) {}
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', next === 'light' ? '#ffffff' : '#080c14');
+    var btn = document.getElementById('theme-btn');
+    if (btn) {
+      btn.setAttribute('aria-label', next === 'light' ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro');
+      btn.title = next === 'light' ? 'Modo oscuro' : 'Modo claro';
+    }
+  }
+
+  try {
+    applyTheme(localStorage.getItem('trujillo_theme') || 'dark');
+  } catch (e) {
+    applyTheme('dark');
+  }
+
+  var themeBtn = document.getElementById('theme-btn');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function () {
+      applyTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+    });
+  }
+
   try {
     var host = window.location.hostname || 'trujillomingorance.com';
     var path = window.location.pathname || '/';
@@ -10,7 +37,7 @@
     if (hostDisplay) hostDisplay.textContent = host;
     if (telePath) telePath.textContent = path;
 
-    var known = ['labs', 'ai', 'groq', 'focusguard', 'guides', 'guias', 'alberto', 'rocky', 'rewrite', 'www'];
+    var known = ['labs', 'ai', 'groq', 'focusguard', 'guides', 'guias', 'alberto', 'rewrite', 'www'];
     var isKnown = known.some(function (s) { return host.indexOf(s + '.') === 0; });
     var isSubdomain = host.indexOf('.trujillomingorance.com') !== -1 && !isKnown;
 
@@ -19,10 +46,10 @@
       var errorTitle = document.getElementById('errorTitle');
       var badgeText = document.getElementById('badgeText');
       var teleRouting = document.getElementById('teleRouting');
-      if (pageTitle) pageTitle.textContent = 'Subdominio No Asignado | ATM Software Labs';
+      if (pageTitle) pageTitle.textContent = 'Subdominio no asignado | ATM Labs';
       if (errorTitle) errorTitle.textContent = 'Subdominio no asignado en el perímetro';
-      if (badgeText) badgeText.textContent = 'DNS WILDCARD • SUBDOMINIO NO ASIGNADO';
-      if (teleRouting) teleRouting.textContent = 'DNS Comodín Activo • Sin servicio mapeado';
+      if (badgeText) badgeText.textContent = 'DNS WILDCARD · SUBDOMINIO NO ASIGNADO';
+      if (teleRouting) teleRouting.textContent = 'DNS comodín activo · sin servicio mapeado';
     } else {
       var desc = document.getElementById('errorDesc');
       if (desc) {
@@ -43,20 +70,27 @@
   } catch (e) {}
 
   var copyBtn = document.getElementById('copyBtnText');
-  var copyWrap = copyBtn ? copyBtn.closest('button') : document.getElementById('copyDiagnostics');
+  var copyWrap = document.getElementById('btnCopyDiag');
   function copyDiagnostics() {
-    var host = (document.getElementById('teleHost') && document.getElementById('teleHost').textContent) || window.location.hostname;
-    var path = (document.getElementById('telePath') && document.getElementById('telePath').textContent) || window.location.pathname;
-    var text = 'Diagnóstico Perimetral ATM Software Labs:\nHost: ' + host + '\nRuta: ' + path + '\nEstado: HTTP 404\nEdge: Cloudflare Anycast\nFecha: ' + new Date().toISOString();
+    var hostNow = (document.getElementById('teleHost') && document.getElementById('teleHost').textContent) || window.location.hostname;
+    var pathNow = (document.getElementById('telePath') && document.getElementById('telePath').textContent) || window.location.pathname;
+    var text = 'Diagnóstico perimetral ATM Labs:\nHost: ' + hostNow + '\nRuta: ' + pathNow + '\nEstado: HTTP 404\nEdge: Cloudflare Anycast\nFecha: ' + new Date().toISOString();
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function () {
         if (copyBtn) {
-          copyBtn.textContent = 'Copiado al portapapeles';
+          copyBtn.textContent = 'Copiado';
           setTimeout(function () { copyBtn.textContent = 'Copiar diagnóstico'; }, 2500);
         }
       }).catch(function () {});
     }
   }
   if (copyWrap) copyWrap.addEventListener('click', copyDiagnostics);
-  else if (copyBtn) copyBtn.addEventListener('click', copyDiagnostics);
+
+  var backBtn = document.getElementById('btnBack');
+  if (backBtn) {
+    backBtn.addEventListener('click', function () {
+      if (window.history.length > 1) window.history.back();
+      else window.location.href = 'https://labs.trujillomingorance.com';
+    });
+  }
 })();

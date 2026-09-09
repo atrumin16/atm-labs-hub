@@ -124,19 +124,30 @@ function pickCustomDomain(project) {
   return '';
 }
 
+function rankOf(id) {
+  const index = FEATURED_ORDER.indexOf(id);
+  return index === -1 ? 100 : index;
+}
+
 function polish(item) {
   if (!item) return null;
   const domain = ownHost(item.domain || item.url);
   if (!domain) return null;
   if (domain === 'trujillomingorance.com' || domain === 'labs.trujillomingorance.com' || domain === 'rocky.trujillomingorance.com') return null;
-  const featured = FEATURED_ORDER.indexOf(item.id) !== -1 || !!item.featured;
+  const rank = rankOf(item.id);
   return Object.assign({}, item, {
     domain,
     url: item.url && ownHost(item.url) ? item.url : ('https://' + domain),
     alt: '',
-    featured: featured,
-    rank: featured ? FEATURED_ORDER.indexOf(item.id) : 100
+    featured: rank < 100 || !!item.featured,
+    rank
   });
+}
+
+function byRank(a, b) {
+  const ra = typeof a.rank === 'number' ? a.rank : 100;
+  const rb = typeof b.rank === 'number' ? b.rank : 100;
+  return ra - rb;
 }
 
 function mergeProject(cfProject) {
@@ -165,7 +176,7 @@ function mergeProject(cfProject) {
 function fallbackCatalog() {
   return Object.values(CATALOG).map(polish).filter(Boolean).map(function (item) {
     return Object.assign({ source: 'fallback' }, item);
-  }).sort(function (a, b) { return (a.rank || 100) - (b.rank || 100); });
+  }).sort(byRank);
 }
 
 function jsonResponse(body, status) {
@@ -182,7 +193,7 @@ function jsonResponse(body, status) {
 export async function onRequestGet(context) {
   const { request, env } = context;
   const cache = caches.default;
-  const cacheKey = new Request(new URL('/api/projects?v=hub5', request.url), { method: 'GET' });
+  const cacheKey = new Request(new URL('/api/projects?v=hub6', request.url), { method: 'GET' });
 
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
@@ -212,7 +223,7 @@ export async function onRequestGet(context) {
           }
         });
         if (mapped.length) {
-          projects = mapped.sort(function (a, b) { return (a.rank || 100) - (b.rank || 100); });
+          projects = mapped.sort(byRank);
           source = 'cloudflare';
         }
       }

@@ -47,7 +47,6 @@
     if (!host || HIDDEN_HOSTS[host]) return false;
     var id = project.id || '';
     if (id === 'domain-root' || id === 'atm-labs-hub' || id === 'rocky-setter') return false;
-    if (host === 'rocky.trujillomingorance.com') return false;
     return true;
   }
 
@@ -62,6 +61,11 @@
     try { localStorage.setItem('trujillo_theme', next); } catch (e) {}
     var meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', next === 'light' ? '#ffffff' : '#080c14');
+    var btn = $('theme-btn');
+    if (btn) {
+      btn.setAttribute('aria-label', next === 'light' ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro');
+      btn.title = next === 'light' ? 'Modo oscuro' : 'Modo claro';
+    }
   }
 
   function renderSkeletons(grid, count) {
@@ -82,6 +86,14 @@
     body.appendChild(h('p', 'card-kicker', project.domain || ''));
     body.appendChild(h('h2', 'card-title', project.title || ''));
     body.appendChild(h('p', 'card-description', project.description || ''));
+    var stack = Array.isArray(project.stack) ? project.stack : [];
+    if (stack.length) {
+      var list = h('ul', 'tech-stack');
+      stack.forEach(function (item) {
+        list.appendChild(h('li', 'tech-pill', item));
+      });
+      body.appendChild(list);
+    }
     card.appendChild(body);
     var footer = h('div', 'card-footer');
     var launch = h('a', 'btn-launch');
@@ -135,7 +147,7 @@
     var grid = $('projectsGrid');
     if (grid) renderSkeletons(grid, 5);
     try {
-      var res = await fetch('/api/projects?v=hub5', { headers: { Accept: 'application/json' } });
+      var res = await fetch('/api/projects?v=hub6', { headers: { Accept: 'application/json' } });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       var data = await res.json();
       state.projects = (Array.isArray(data.projects) ? data.projects : []).filter(isOwnProject);

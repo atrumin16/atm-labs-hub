@@ -1,178 +1,149 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="pageTitle">404 Diagnóstico Perimetral | ATM Software Labs</title>
+  <title id="pageTitle">404 Diagnóstico Perimetral | ATM Labs</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#080c14">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%230078d4'/><text x='50' y='68' font-size='55' font-family='sans-serif' font-weight='800' fill='white' text-anchor='middle'>A</text></svg>">
-  <link rel="stylesheet" href="/css/tokens.css">
-  <link rel="stylesheet" href="/css/404.css">
-  </head>
+  <link rel="icon" type="image/png" href="/avatar.png">
+  <script src="/js/theme-boot.js"></script>
+  <link rel="stylesheet" href="/css/tokens.css?v=hub6">
+  <link rel="stylesheet" href="/css/404.css?v=hub6">
+</head>
 <body>
   <div class="bg-ambient" aria-hidden="true"></div>
 
-  <!-- Top Utility Bar -->
-  <header class="top-bar">
-    <div class="top-bar-inner">
-      <a href="https://labs.trujillomingorance.com" class="brand-group" title="ATM Software Labs - Portal Central">
-        <div class="brand-badge">A</div>
-        <div class="brand-meta">
-          <span class="brand-name">ATM Software Labs</span>
-          <span class="brand-service">Edge Gateway &amp; Diagnostics</span>
-        </div>
-      </a>
-
-      <div class="edge-status-pill" title="Red Anycast de Cloudflare activa">
-        <span class="edge-dot"></span>
-        <span>Cloudflare Anycast • Normal</span>
-      </div>
+  <header class="docs-topbar">
+    <a href="https://labs.trujillomingorance.com" class="brand">
+      <img src="/avatar.png" alt="" class="brand-avatar" width="28" height="28">
+      <span>ATM Labs</span>
+    </a>
+    <div class="topbar-actions">
+      <button type="button" class="theme-toggle-btn" id="theme-btn" title="Cambiar tema" aria-label="Cambiar tema">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
     </div>
   </header>
 
-  <!-- Main Content -->
   <main class="diag-main">
-
-    <!-- Central Diagnostic Card -->
     <article class="diag-card">
       <div class="diag-card-stripe"></div>
 
       <div class="diag-top">
         <div class="error-tag" id="errorTag">
           <span class="error-tag-dot"></span>
-          <span id="badgeText">HTTP 404 • SUBDOMINIO NO ASIGNADO</span>
+          <span id="badgeText">HTTP 404 · SUBDOMINIO NO ASIGNADO</span>
         </div>
         <span class="routing-layer-badge">Capa 7 Edge Routing</span>
       </div>
 
       <h1 class="diag-title" id="errorTitle">Subdominio no asignado en el perímetro</h1>
       <p class="diag-desc" id="errorDesc">
-        El host <code id="hostDisplay">trujillomingorance.com</code> resolvió correctamente mediante el registro DNS comodín (*), pero actualmente no se encuentra mapeado a ningún servicio o aplicación de la red.
+        El host <code id="hostDisplay">trujillomingorance.com</code> resolvió correctamente mediante el registro DNS comodín (*), pero actualmente no se encuentra mapeado a ningún servicio de la red.
       </p>
 
-      <!-- Technical Telemetry Console -->
       <div class="telemetry-console">
         <div class="console-header">
-          <div class="console-dots">
-            <span class="c-dot"></span>
-            <span class="c-dot"></span>
-            <span class="c-dot"></span>
-          </div>
-          <span>INSPECCIÓN TÉCNICA DEL PERÍMETRO</span>
+          <span>Inspección técnica del perímetro</span>
         </div>
         <div class="console-body">
           <div class="console-row">
-            <span class="console-label">Host Solicitado</span>
+            <span class="console-label">Host solicitado</span>
             <span class="console-val cyan" id="teleHost">-</span>
           </div>
           <div class="console-row">
-            <span class="console-label">Ruta Solicitada</span>
+            <span class="console-label">Ruta solicitada</span>
             <span class="console-val" id="telePath">-</span>
           </div>
           <div class="console-row">
             <span class="console-label">Resolución DNS</span>
-            <span class="console-val green">*.trujillomingorance.com &rarr; Proxied</span>
+            <span class="console-val green">*.trujillomingorance.com → Proxied</span>
           </div>
           <div class="console-row">
-            <span class="console-label">Estado de Enrutamiento</span>
+            <span class="console-label">Estado de enrutamiento</span>
             <span class="console-val orange" id="teleRouting">Target Unmapped (HTTP 404)</span>
           </div>
           <div class="console-row">
             <span class="console-label">Enrutador Edge</span>
-            <span class="console-val">Cloudflare Global Anycast (MAD POP)</span>
+            <span class="console-val">Cloudflare Global Anycast</span>
           </div>
           <div class="console-row">
-            <span class="console-label">Protocolo de Transporte</span>
-            <span class="console-val">HTTPS / TLS 1.3 Preloaded</span>
+            <span class="console-label">Transporte</span>
+            <span class="console-val">HTTPS / TLS 1.3</span>
           </div>
         </div>
       </div>
 
-      <!-- Action Buttons -->
       <div class="diag-actions">
         <a href="https://labs.trujillomingorance.com" class="btn-primary">
-          <span>Ir a ATM Labs Hub (Portal Central)</span>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          <span>Ir a ATM Labs</span>
         </a>
-        <button id="btnCopyDiag" class="btn-secondary" >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        <button id="btnCopyDiag" class="btn-secondary" type="button">
           <span id="copyBtnText">Copiar diagnóstico</span>
         </button>
-        <a href="javascript:history.back()" class="btn-secondary">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-          <span>Volver atrás</span>
-        </a>
+        <button id="btnBack" class="btn-secondary" type="button">Volver atrás</button>
       </div>
     </article>
 
-    <!-- Active Services Navigation Grid -->
     <section class="services-nav">
       <div class="services-nav-header">
-        <h2 class="services-nav-title">Servicios y Subdominios Activos</h2>
-        <span class="services-nav-sub">6 endpoints disponibles</span>
+        <h2 class="services-nav-title">Servicios activos</h2>
+        <span class="services-nav-sub">6 endpoints</span>
       </div>
 
       <div class="services-grid">
         <a href="https://labs.trujillomingorance.com" class="service-tile">
           <div class="service-tile-top">
             <span class="service-tile-domain">labs.</span>
-            <span class="service-tile-status"></span>
           </div>
-          <span class="service-tile-desc">Portal Central ATM Labs &amp; Directorio</span>
+          <span class="service-tile-desc">Portal central ATM Labs</span>
         </a>
 
         <a href="https://ai.trujillomingorance.com" class="service-tile">
           <div class="service-tile-top">
             <span class="service-tile-domain">ai.</span>
-            <span class="service-tile-status"></span>
           </div>
-          <span class="service-tile-desc">Trujillo AI Studio (Groq LPU Multimodal)</span>
+          <span class="service-tile-desc">Trujillo AI Studio</span>
+        </a>
+
+        <a href="https://rewrite.trujillomingorance.com" class="service-tile">
+          <div class="service-tile-top">
+            <span class="service-tile-domain">rewrite.</span>
+          </div>
+          <span class="service-tile-desc">Rewrite AI · humanizador</span>
         </a>
 
         <a href="https://focusguard.trujillomingorance.com" class="service-tile">
           <div class="service-tile-top">
             <span class="service-tile-domain">focusguard.</span>
-            <span class="service-tile-status"></span>
           </div>
-          <span class="service-tile-desc">FocusGuard SaaS &amp; Zero-Trust DNS Shield</span>
+          <span class="service-tile-desc">FocusGuard DNS Zero-Trust</span>
         </a>
 
         <a href="https://guides.trujillomingorance.com" class="service-tile">
           <div class="service-tile-top">
             <span class="service-tile-domain">guides.</span>
-            <span class="service-tile-status"></span>
           </div>
-          <span class="service-tile-desc">Engineering Guides &amp; Arquitecturas</span>
+          <span class="service-tile-desc">Engineering Guides</span>
         </a>
 
         <a href="https://alberto.trujillomingorance.com" class="service-tile">
           <div class="service-tile-top">
             <span class="service-tile-domain">alberto.</span>
-            <span class="service-tile-status"></span>
           </div>
-          <span class="service-tile-desc">Portfolio Profesional &amp; Trayectoria</span>
-        </a>
-
-        <a href="https://rocky.trujillomingorance.com" class="service-tile">
-          <div class="service-tile-top">
-            <span class="service-tile-domain">rocky.</span>
-            <span class="service-tile-status"></span>
-          </div>
-          <span class="service-tile-desc">Sitio Web de Rocky &amp; Ficha Microchip</span>
+          <span class="service-tile-desc">Portfolio profesional</span>
         </a>
       </div>
     </section>
-
   </main>
 
-  <!-- Footer -->
   <footer class="diag-footer">
-    <span>&copy; 2026 Alberto Trujillo Mingorance. Todos los derechos reservados.</span>
-    <span class="diag-footer-domain">ATM Software Labs &bull; trujillomingorance.com</span>
+    <span>© 2026 Alberto Trujillo Mingorance</span>
+    <span class="diag-footer-domain">trujillomingorance.com</span>
   </footer>
 
-  <script src="/js/404.js"></script>
+  <script src="/js/404.js?v=hub6"></script>
 </body>
 </html>
-

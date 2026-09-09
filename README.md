@@ -16,11 +16,11 @@ The central directory and navigation portal for the services, tools, and technic
 | Domain | Service | Stack Overview |
 | :--- | :--- | :--- |
 | `ai.trujillomingorance.com` | Trujillo AI Studio | Multimodal AI assistant on Groq LPU and Cloudflare Workers |
+| `rewrite.trujillomingorance.com` | Rewrite AI | Editorial rewriter and humanizer with Edge streaming |
 | `focusguard.trujillomingorance.com` | FocusGuard | Zero-Trust DNS-over-HTTPS filtering, ad-blocking, and parental controls |
 | `alberto.trujillomingorance.com` | Engineering Portfolio | Personal portfolio, skills showcase, and systems engineering background |
 | `guides.trujillomingorance.com` | ATM Technical Guides | In-depth engineering runbooks, mail architectures, and technical docs |
-| `rocky.trujillomingorance.com` | Rocky Setter Identification | Veterinary profile, NFC collar lookup, and pet emergency contact portal |
-| `labs.trujillomingorance.com` | Ecosystem Hub | Central service directory with real-time fuzzy search and status telemetry |
+| `labs.trujillomingorance.com` | Ecosystem Hub | Central service directory with client-side search |
 
 ---
 
