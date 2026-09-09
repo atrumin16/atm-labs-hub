@@ -12,7 +12,8 @@ const CATALOG = {
     description: 'Asistente multimodal de ultra-alta velocidad en Groq LPU. Visión, razonamiento de código y streaming en el Edge.',
     url: 'https://ai.trujillomingorance.com',
     domain: 'ai.trujillomingorance.com',
-    alt: 'groq.trujillomingorance.com',
+    alt: '',
+    featured: true,
     category: 'ai',
     keywords: 'ia ai groq qwen vision chatbot studio multimodal',
     stack: ['Groq LPU', 'Qwen Vision', 'Cloudflare Worker'],
@@ -25,6 +26,7 @@ const CATALOG = {
     url: 'https://rewrite.trujillomingorance.com',
     domain: 'rewrite.trujillomingorance.com',
     alt: '',
+    featured: true,
     category: 'ai',
     keywords: 'rewrite humanizer anti-ia turnitin groq',
     stack: ['Pages Functions', 'Groq LPU', 'Workers AI'],
@@ -36,7 +38,8 @@ const CATALOG = {
     description: 'Filtrado DNS Zero-Trust. Bloquea anuncios, telemetría, malware y rastreadores a nivel de red.',
     url: 'https://focusguard.trujillomingorance.com',
     domain: 'focusguard.trujillomingorance.com',
-    alt: 'adshield.focusguard.trujillomingorance.com',
+    alt: '',
+    featured: true,
     category: 'security',
     keywords: 'focusguard adshield dns adblock zero-trust',
     stack: ['DNS-over-HTTPS', 'Zero-Trust', 'D1 & KV'],
@@ -49,6 +52,7 @@ const CATALOG = {
     url: 'https://alberto.trujillomingorance.com',
     domain: 'alberto.trujillomingorance.com',
     alt: '',
+    featured: true,
     category: 'engineering',
     keywords: 'portfolio alberto cv sysadmin devops',
     stack: ['Cloudflare Pages', 'Vanilla JS', 'Security Eng'],
@@ -61,6 +65,7 @@ const CATALOG = {
     url: 'https://guides.trujillomingorance.com',
     domain: 'guides.trujillomingorance.com',
     alt: '',
+    featured: true,
     category: 'engineering',
     keywords: 'guias guides documentacion devops cloudflare',
     stack: ['Technical Docs', 'DevOps', 'Edge'],
@@ -105,7 +110,14 @@ const CATALOG = {
   },
 };
 
-const HIDDEN = new Set(['neurolock', 'manual-de-bloqueo']);
+const HIDDEN = new Set(['neurolock', 'manual-de-bloqueo', 'domain-root', 'atm-labs-hub']);
+const FEATURED_ORDER = [
+  'trujillo-ai-studio',
+  'rewrite-ai',
+  'trujillo-guides',
+  'focusguard',
+  'alberto-portfolio'
+];
 
 function ownHost(value) {
   if (!value) return '';
@@ -128,11 +140,14 @@ function polish(item) {
   if (!item) return null;
   const domain = ownHost(item.domain || item.url);
   if (!domain) return null;
-  const alt = ownHost(item.alt);
+  if (domain === 'trujillomingorance.com' || domain === 'labs.trujillomingorance.com') return null;
+  const featured = FEATURED_ORDER.indexOf(item.id) !== -1 || !!item.featured;
   return Object.assign({}, item, {
     domain,
     url: item.url && ownHost(item.url) ? item.url : ('https://' + domain),
-    alt: alt && alt !== domain ? alt : ''
+    alt: '',
+    featured: featured,
+    rank: featured ? FEATURED_ORDER.indexOf(item.id) : 100
   });
 }
 
@@ -148,7 +163,8 @@ function mergeProject(cfProject) {
     description: known.description || 'Servicio del ecosistema trujillomingorance.com.',
     url: known.url || ('https://' + domain),
     domain,
-    alt: known.alt || '',
+    alt: '',
+    featured: FEATURED_ORDER.indexOf(name) !== -1 || !!known.featured,
     category: known.category || 'apps',
     keywords: known.keywords || name,
     stack: known.stack || ['Cloudflare Pages'],
@@ -161,7 +177,7 @@ function mergeProject(cfProject) {
 function fallbackCatalog() {
   return Object.values(CATALOG).map(polish).filter(Boolean).map(function (item) {
     return Object.assign({ source: 'fallback' }, item);
-  });
+  }).sort(function (a, b) { return (a.rank || 100) - (b.rank || 100); });
 }
 
 function jsonResponse(body, status) {
@@ -178,7 +194,7 @@ function jsonResponse(body, status) {
 export async function onRequestGet(context) {
   const { request, env } = context;
   const cache = caches.default;
-  const cacheKey = new Request(new URL('/api/projects?v=own-domain', request.url), { method: 'GET' });
+  const cacheKey = new Request(new URL('/api/projects?v=featured-2', request.url), { method: 'GET' });
 
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
@@ -208,7 +224,7 @@ export async function onRequestGet(context) {
           }
         });
         if (mapped.length) {
-          projects = mapped;
+          projects = mapped.sort(function (a, b) { return (a.rank || 100) - (b.rank || 100); });
           source = 'cloudflare';
         }
       }

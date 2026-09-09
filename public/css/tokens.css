@@ -33,4 +33,28 @@
   --radius-md: 10px;
   --radius-sm: 6px;
   --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --serif: Newsreader, "Iowan Old Style", Georgia, serif;
+  --header-bg: rgba(8, 12, 20, 0.85);
+  --header-border: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-elev: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-color: #ffffff;
+  --card-bg: #ffffff;
+  --card-hover: #f8fafc;
+  --card-border: #e2e8f0;
+  --line: rgba(15, 23, 42, 0.1);
+  --line-strong: rgba(15, 23, 42, 0.18);
+  --text: #0f172a;
+  --text-primary: #0f172a;
+  --muted: #334155;
+  --text-secondary: #334155;
+  --dim: #64748b;
+  --text-muted: #64748b;
+  --white: #0f172a;
+  --header-bg: rgba(255, 255, 255, 0.92);
+  --header-border: #e2e8f0;
 }

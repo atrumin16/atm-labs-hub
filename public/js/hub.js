@@ -1,9 +1,7 @@
 (function () {
   'use strict';
 
-  function $(id) {
-    return document.getElementById(id);
-  }
+  function $(id) { return document.getElementById(id); }
 
   function h(tag, className, text) {
     var n = document.createElement(tag);
@@ -16,11 +14,53 @@
     while (node.firstChild) node.removeChild(node.firstChild);
   }
 
+  var FEATURED = {
+    'trujillo-ai-studio': 0,
+    'rewrite-ai': 1,
+    'trujillo-guides': 2,
+    focusguard: 3,
+    'alberto-portfolio': 4
+  };
+
+  var HIDDEN_HOSTS = {
+    'trujillomingorance.com': 1,
+    'labs.trujillomingorance.com': 1
+  };
+
   var state = {
     projects: [],
-    filter: 'all',
-    query: ''
+    query: '',
+    expanded: false
   };
+
+  function professionalHost(value) {
+    if (!value) return '';
+    var host = String(value).replace(/^https?:\/\//i, '').split('/')[0].toLowerCase();
+    if (!host || host.indexOf('pages.dev') !== -1) return '';
+    if (host === 'trujillomingorance.com' || host.slice(-23) === '.trujillomingorance.com') return host;
+    return '';
+  }
+
+  function isOwnProject(project) {
+    var host = professionalHost(project && project.domain) || professionalHost(project && project.url);
+    if (!host || HIDDEN_HOSTS[host]) return false;
+    var id = project.id || '';
+    if (id === 'domain-root' || id === 'atm-labs-hub') return false;
+    return true;
+  }
+
+  function isFeatured(project) {
+    if (project.featured) return true;
+    return Object.prototype.hasOwnProperty.call(FEATURED, project.id);
+  }
+
+  function applyTheme(theme) {
+    var next = theme === 'light' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('trujillo_theme', next); } catch (e) {}
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', next === 'light' ? '#ffffff' : '#080c14');
+  }
 
   function renderSkeletons(grid, count) {
     clearNode(grid);
@@ -33,109 +73,67 @@
     }
   }
 
-  function iconFor(category) {
-    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('viewBox', '0 0 24 24');
-    svg.setAttribute('width', '28');
-    svg.setAttribute('height', '28');
-    svg.setAttribute('fill', 'none');
-    svg.setAttribute('stroke', 'currentColor');
-    svg.setAttribute('stroke-width', '2');
-    svg.setAttribute('stroke-linecap', 'round');
-    svg.setAttribute('stroke-linejoin', 'round');
-    var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    if (category === 'ai') path.setAttribute('d', 'M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3h-1v1a4 4 0 0 1-4 4h0a4 4 0 0 1-4-4v-1H7a3 3 0 0 1-3-3v-2a3 3 0 0 1 3-3h1V6a4 4 0 0 1 4-4Z');
-    else if (category === 'security') path.setAttribute('d', 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z');
-    else if (category === 'engineering') path.setAttribute('d', 'M16 18l6-6-6-6M8 6l-6 6 6 6');
-    else path.setAttribute('d', 'M12 2l10 5-10 5L2 7l10-5z');
-    svg.appendChild(path);
-    return svg;
-  }
-
   function renderCard(project) {
-    var card = h('article', 'app-card' + (project.current ? ' current-hub' : ''));
+    var card = h('article', 'app-card');
     card.dataset.category = project.category || 'apps';
-    card.dataset.keywords = project.keywords || '';
-
-    var header = h('div', 'card-header');
-    var iconWrap = h('div', 'app-icon ' + ((project.category || 'apps') + '-icon'));
-    iconWrap.appendChild(iconFor(project.category));
-    header.appendChild(iconWrap);
-    var badges = h('div', 'card-badges');
-    badges.appendChild(h('span', 'subdomain-tag', project.domain || ''));
-    badges.appendChild(h('span', project.current ? 'status-tag core' : 'status-tag active', project.current ? 'Portal Principal' : 'Online'));
-    header.appendChild(badges);
-    card.appendChild(header);
-
     var body = h('div', 'card-body');
+    body.appendChild(h('p', 'card-kicker', project.domain || ''));
     body.appendChild(h('h2', 'card-title', project.title || ''));
     body.appendChild(h('p', 'card-description', project.description || ''));
-    var stack = h('div', 'tech-stack');
-    (project.stack || []).forEach(function (item) {
-      stack.appendChild(h('span', 'tech-pill', item));
-    });
-    body.appendChild(stack);
     card.appendChild(body);
-
     var footer = h('div', 'card-footer');
-    var alt = professionalHost(project.alt);
-    var domain = professionalHost(project.domain);
-    if (alt && alt !== domain) footer.appendChild(h('span', 'subdomain-alt', alt));
-    else footer.appendChild(h('span', 'subdomain-alt'));
-    var launch = h('a', 'btn-launch' + (project.current ? ' secondary' : ''));
-    launch.href = project.current ? '#top' : (project.url || '#');
-    if (!project.current) {
-      launch.target = '_blank';
-      launch.rel = 'noopener';
-    }
+    var launch = h('a', 'btn-launch');
+    launch.href = project.url || '#';
+    launch.target = '_blank';
+    launch.rel = 'noopener';
     launch.appendChild(h('span', null, project.cta || 'Abrir'));
     footer.appendChild(launch);
     card.appendChild(footer);
     return card;
   }
 
-  function professionalHost(value) {
-    if (!value) return '';
-    var host = String(value).replace(/^https?:\/\//i, '').split('/')[0].toLowerCase();
-    if (!host || host.indexOf('pages.dev') !== -1) return '';
-    if (host === 'trujillomingorance.com' || host.slice(-23) === '.trujillomingorance.com') return host;
-    return '';
-  }
-
-  function isOwnProject(project) {
-    return !!(professionalHost(project && project.domain) || professionalHost(project && project.url));
-  }
-
   function matches(project) {
     var q = state.query;
-    var catOk = state.filter === 'all' || project.category === state.filter;
-    if (!catOk) return false;
     if (!q) return true;
-    var blob = [project.title, project.description, project.keywords, project.domain, project.alt].join(' ').toLowerCase();
+    var blob = [project.title, project.description, project.keywords, project.domain].join(' ').toLowerCase();
     return blob.indexOf(q) !== -1;
   }
 
   function renderGrid() {
     var grid = $('projectsGrid');
+    var moreGrid = $('moreGrid');
+    var moreWrap = $('moreWrap');
+    var moreBtn = $('moreBtn');
     var noResults = $('noResults');
     var queryEl = $('noResultsQuery');
     if (!grid) return;
-    clearNode(grid);
+
     var visible = state.projects.filter(matches);
-    visible.forEach(function (p) { grid.appendChild(renderCard(p)); });
+    var featured = visible.filter(isFeatured);
+    var rest = visible.filter(function (p) { return !isFeatured(p); });
+    var searching = !!state.query;
+
+    clearNode(grid);
+    (searching ? visible : featured).forEach(function (p) { grid.appendChild(renderCard(p)); });
+
+    if (moreGrid) clearNode(moreGrid);
+    var showRest = !searching && rest.length > 0;
+    if (moreWrap) moreWrap.classList.toggle('hidden', !showRest);
+    if (moreGrid) moreGrid.classList.toggle('hidden', !showRest || !state.expanded);
+    if (showRest && state.expanded && moreGrid) {
+      rest.forEach(function (p) { moreGrid.appendChild(renderCard(p)); });
+    }
+    if (moreBtn) moreBtn.textContent = state.expanded ? 'Mostrar menos' : ('Mostrar más' + (rest.length ? ' (' + rest.length + ')' : ''));
+
     if (noResults) noResults.classList.toggle('hidden', visible.length > 0);
-    if (queryEl) queryEl.textContent = state.query || state.filter;
-    var countEl = $('chip-count-all');
-    if (countEl) countEl.textContent = String(state.projects.length);
-    var metric = $('metric-count');
-    if (metric) metric.textContent = String(state.projects.length);
+    if (queryEl) queryEl.textContent = state.query;
   }
 
   async function loadProjects() {
     var grid = $('projectsGrid');
-    if (grid) renderSkeletons(grid, 6);
+    if (grid) renderSkeletons(grid, 5);
     try {
-      var res = await fetch('/api/projects', { headers: { Accept: 'application/json' } });
+      var res = await fetch('/api/projects?v=featured-2', { headers: { Accept: 'application/json' } });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       var data = await res.json();
       state.projects = (Array.isArray(data.projects) ? data.projects : []).filter(isOwnProject);
@@ -146,16 +144,26 @@
   }
 
   function init() {
+    try {
+      applyTheme(localStorage.getItem('trujillo_theme') || 'dark');
+    } catch (e) {
+      applyTheme('dark');
+    }
+
+    var themeBtn = $('theme-btn');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function () {
+        applyTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+      });
+    }
+
     var searchInput = $('projectSearch');
     var clearBtn = $('clearSearch');
-    var chips = document.querySelectorAll('.filter-chip');
+    var moreBtn = $('moreBtn');
     var btnReset = $('btnResetFilters');
 
     window.addEventListener('keydown', function (e) {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        if (searchInput) { searchInput.focus(); searchInput.select(); }
-      } else if (e.key === '/' && document.activeElement !== searchInput) {
         e.preventDefault();
         if (searchInput) { searchInput.focus(); searchInput.select(); }
       }
@@ -177,21 +185,18 @@
         renderGrid();
       });
     }
-    chips.forEach(function (chip) {
-      chip.addEventListener('click', function () {
-        chips.forEach(function (c) { c.classList.remove('active'); });
-        chip.classList.add('active');
-        state.filter = chip.dataset.filter || 'all';
+    if (moreBtn) {
+      moreBtn.addEventListener('click', function () {
+        state.expanded = !state.expanded;
         renderGrid();
       });
-    });
+    }
     if (btnReset) {
       btnReset.addEventListener('click', function () {
         state.query = '';
-        state.filter = 'all';
+        state.expanded = false;
         if (searchInput) searchInput.value = '';
         if (clearBtn) clearBtn.classList.add('hidden');
-        chips.forEach(function (c) { c.classList.toggle('active', c.dataset.filter === 'all'); });
         renderGrid();
       });
     }

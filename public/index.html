@@ -1,122 +1,68 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ATM Software Labs | Ecosistema de Proyectos &amp; Subdominios</title>
-  <meta name="description" content="Portal central de aplicaciones, servicios de IA, ciberseguridad, documentación técnica y proyectos de Alberto Trujillo Mingorance.">
+  <title>ATM Labs · Ecosistema Trujillo Mingorance</title>
+  <meta name="description" content="Directorio de servicios en producción: IA, Rewrite, Guides, FocusGuard y más.">
   <meta name="theme-color" content="#080c14">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%230078d4'/><text x='50' y='68' font-size='55' font-family='sans-serif' font-weight='800' fill='white' text-anchor='middle'>A</text></svg>">
-  <link rel="stylesheet" href="css/tokens.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="/avatar.png">
+  <script src="/js/theme-boot.js"></script>
+  <link rel="stylesheet" href="/css/tokens.css?v=hub2">
+  <link rel="stylesheet" href="/styles.css?v=hub2">
 </head>
-<body>
+<body class="docs-body">
   <div class="bg-glow" aria-hidden="true"></div>
 
-  <header class="hub-header">
-    <div class="header-inner">
-      <a href="https://labs.trujillomingorance.com" class="brand">
-        <div class="brand-badge">A</div>
-        <div class="brand-text">
-          <span class="brand-title">ATM Software Labs</span>
-          <span class="brand-sub">trujillomingorance.com</span>
-        </div>
-      </a>
-      <div class="header-right">
-        <div class="system-status" title="Servicios en Cloudflare Global Edge">
-          <span class="status-dot"></span>
-          <span class="status-text">Sistemas Operativos</span>
-        </div>
-        <a href="https://alberto.trujillomingorance.com" class="btn-author" target="_blank" rel="noopener">
-          <span>Autor</span>
-        </a>
-      </div>
+  <header class="docs-topbar">
+    <a href="/" class="brand">
+      <img src="/avatar.png" alt="" class="brand-avatar" width="28" height="28">
+      <span>ATM Labs</span>
+    </a>
+    <div class="topbar-actions">
+      <a class="hub-link" href="https://ai.trujillomingorance.com" rel="noopener">AI</a>
+      <a class="hub-link" href="https://guides.trujillomingorance.com" rel="noopener">Guides</a>
+      <button type="button" class="theme-toggle-btn" id="theme-btn" title="Cambiar tema" aria-label="Cambiar tema">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
     </div>
   </header>
 
   <main class="hub-container" id="top">
     <section class="hero">
-      <div class="hero-chip">
-        <span class="hero-chip-badge">CENTRAL HUB</span>
-        <span class="hero-chip-text">Directorio de Servicios &amp; Subdominios</span>
-      </div>
-      <h1 class="hero-title">Ecosistema Tecnológico <span class="gradient-text">Trujillo Mingorance</span></h1>
-      <p class="hero-desc">Accede a las plataformas, inteligencias artificiales, herramientas de ciberseguridad y guías técnicas en producción. El catálogo se descubre solo desde Cloudflare Pages.</p>
-
+      <p class="kicker">Ecosistema · trujillomingorance.com</p>
+      <h1 class="hero-title">Servicios en producción</h1>
+      <p class="hero-desc">IA, reescritura, documentación y seguridad perimetral. Los proyectos principales primero; el resto, al desplegar.</p>
       <div class="search-filter-box">
         <div class="search-bar">
-          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          <input type="text" id="projectSearch" placeholder="Buscar proyecto, tecnología o subdominio..." autocomplete="off" spellcheck="false">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="search" id="projectSearch" placeholder="Buscar un servicio…" autocomplete="off" spellcheck="false">
           <button id="clearSearch" class="btn-clear hidden" aria-label="Limpiar búsqueda" type="button">&times;</button>
-        </div>
-        <div class="filter-chips" role="tablist" aria-label="Categorías de proyectos">
-          <button class="filter-chip active" data-filter="all" type="button">Todos <span class="chip-count" id="chip-count-all">—</span></button>
-          <button class="filter-chip" data-filter="ai" type="button">IA &amp; LLMs</button>
-          <button class="filter-chip" data-filter="security" type="button">Ciberseguridad</button>
-          <button class="filter-chip" data-filter="engineering" type="button">Ingeniería &amp; Docs</button>
-          <button class="filter-chip" data-filter="apps" type="button">Web Apps &amp; Cripto</button>
         </div>
       </div>
     </section>
 
     <section class="app-grid" id="projectsGrid" aria-live="polite"></section>
+    <div id="moreWrap" class="more-wrap hidden">
+      <button type="button" class="more-btn" id="moreBtn">Mostrar más</button>
+    </div>
+    <section class="app-grid hidden" id="moreGrid"></section>
 
     <div id="noResults" class="no-results hidden">
-      <h3>No se encontraron proyectos</h3>
-      <p>No hay resultados que coincidan con “<span id="noResultsQuery"></span>”.</p>
-      <button class="btn-reset" id="btnResetFilters" type="button">Ver todos los proyectos</button>
+      <h3>Sin resultados</h3>
+      <p>Nada coincide con “<span id="noResultsQuery"></span>”.</p>
+      <button class="btn-reset" id="btnResetFilters" type="button">Ver principales</button>
     </div>
-
-    <section class="metrics-strip">
-      <div class="metric-item">
-        <div class="metric-num" id="metric-count">—</div>
-        <div class="metric-label">Servicios descubiertos</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-num">&lt; 15ms</div>
-        <div class="metric-label">Latencia Edge Cloudflare</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-num">100%</div>
-        <div class="metric-label">Adaptabilidad Móvil</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-num">Zero-Trust</div>
-        <div class="metric-label">Seguridad Perimetral</div>
-      </div>
-    </section>
   </main>
 
   <footer class="hub-footer">
-    <div class="footer-inner">
-      <div class="footer-col">
-        <div class="brand-footer">ATM Software Labs</div>
-        <p class="footer-desc">Infraestructura, ciberseguridad e inteligencia artificial al servicio de soluciones robustas y escalables.</p>
-      </div>
-      <div class="footer-col">
-        <div class="footer-heading">Subdominios Principales</div>
-        <ul class="footer-links">
-          <li><a href="https://ai.trujillomingorance.com" target="_blank" rel="noopener">ai.trujillomingorance.com</a></li>
-          <li><a href="https://rewrite.trujillomingorance.com" target="_blank" rel="noopener">rewrite.trujillomingorance.com</a></li>
-          <li><a href="https://guides.trujillomingorance.com" target="_blank" rel="noopener">guides.trujillomingorance.com</a></li>
-          <li><a href="https://focusguard.trujillomingorance.com" target="_blank" rel="noopener">focusguard.trujillomingorance.com</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <div class="footer-heading">Red &amp; Seguridad</div>
-        <ul class="footer-links">
-          <li><span class="footer-badge">Cloudflare Pages &amp; Workers</span></li>
-          <li><span class="footer-badge">SSL/TLS HSTS Preloaded</span></li>
-          <li><span class="footer-badge">Edge Caching Activo</span></li>
-        </ul>
-      </div>
-    </div>
     <div class="footer-bottom">
-      <p>&copy; 2026 Alberto Trujillo Mingorance. Todos los derechos reservados.</p>
+      <p>© 2026 Alberto Trujillo Mingorance</p>
       <div class="domain-pill">trujillomingorance.com</div>
     </div>
   </footer>
 
-  <script src="js/hub.js"></script>
+  <script src="/js/hub.js?v=hub2"></script>
 </body>
 </html>
