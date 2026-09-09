@@ -1,26 +1,4 @@
-:root {
-  --bg-color: #080c14;
-  --card-bg: rgba(15, 22, 36, 0.78);
-  --card-hover: rgba(22, 32, 52, 0.9);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --card-border-hover: rgba(0, 120, 212, 0.45);
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --accent: #0078d4;
-  --accent-cyan: #38bdf8;
-  --accent-glow: rgba(0, 120, 212, 0.18);
-  --success: #107c41;
-  --success-bg: rgba(16, 124, 65, 0.12);
-  --purple: #818cf8;
-  --indigo: #6366f1;
-  --font-main: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "Cascadia Code", "IBM Plex Mono", ui-monospace, monospace;
-  --radius-lg: 16px;
-  --radius-md: 10px;
-  --radius-sm: 6px;
-  --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
+/* Color tokens live in css/tokens.css so light/dark do not clash. */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -65,7 +43,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(8, 12, 20, 0.85);
+  background: var(--header-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--card-border);
@@ -112,7 +90,7 @@ body {
   font-size: 1.1rem;
   font-weight: 700;
   letter-spacing: -0.3px;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .brand-sub {
@@ -170,9 +148,9 @@ body {
 }
 
 .btn-author:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--bg-elev);
+  color: var(--text-primary);
+  border-color: var(--line-strong);
 }
 
 /* Hub Container */
@@ -269,21 +247,19 @@ body {
 .search-bar input {
   width: 100%;
   padding: 0.9rem 2.8rem 0.9rem 3rem;
-  background: rgba(15, 23, 42, 0.7);
+  background: var(--bg-elev);
   border: 1px solid var(--card-border);
   border-radius: 9999px;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 0.95rem;
   font-family: inherit;
   outline: none;
   transition: var(--transition);
-  backdrop-filter: blur(8px);
 }
 
 .search-bar input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
-  background: rgba(15, 23, 42, 0.9);
+  border-color: var(--line-strong);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
 }
 
 .search-bar input::placeholder {
@@ -310,8 +286,8 @@ body {
 }
 
 .btn-clear:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background: var(--bg-elev);
+  color: var(--text-primary);
 }
 
 .filter-chips {
@@ -338,9 +314,9 @@ body {
 }
 
 .filter-chip:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--bg-elev);
+  color: var(--text-primary);
+  border-color: var(--line-strong);
 }
 
 .filter-chip.active {
@@ -485,7 +461,7 @@ body {
   font-size: 1.35rem;
   font-weight: 700;
   margin-bottom: 0.65rem;
-  color: #fff;
+  color: var(--text-primary);
   letter-spacing: -0.3px;
 }
 
@@ -505,9 +481,9 @@ body {
 .tech-pill {
   font-size: 0.75rem;
   font-family: var(--font-mono);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #cbd5e1;
+  background: var(--bg-elev);
+  border: 1px solid var(--card-border);
+  color: var(--text-secondary);
   padding: 0.2rem 0.55rem;
   border-radius: 6px;
 }
@@ -515,10 +491,10 @@ body {
 .card-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 0.75rem;
   padding-top: 1.25rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--card-border);
 }
 
 .subdomain-alt {
@@ -535,23 +511,20 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  background: linear-gradient(135deg, #0284c7, #0ea5e9);
-  color: #fff;
+  background: var(--text-primary);
+  color: var(--bg-color);
   font-size: 0.875rem;
   font-weight: 600;
   padding: 0.6rem 1.1rem;
-  border-radius: var(--radius-sm);
+  border-radius: 999px;
   text-decoration: none;
   transition: var(--transition);
-  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.25);
   min-height: 42px;
   flex-shrink: 0;
 }
 
 .btn-launch:hover {
-  background: linear-gradient(135deg, #0369a1, #0284c7);
-  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
-  transform: translateY(-1px);
+  opacity: 0.88;
 }
 
 .btn-launch.secondary {
@@ -562,8 +535,8 @@ body {
 }
 
 .btn-launch.secondary:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+  background: var(--bg-elev);
+  color: var(--text-primary);
 }
 
 /* Current hub card styling */
@@ -591,7 +564,7 @@ body {
 
 .no-results h3 {
   font-size: 1.25rem;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
 
@@ -648,8 +621,8 @@ body {
 .hub-footer {
   margin-top: auto;
   border-top: 1px solid var(--card-border);
-  background: rgba(5, 8, 15, 0.9);
-  padding: 3.5rem 1.5rem 2rem;
+  background: var(--header-bg);
+  padding: 2rem 1.5rem;
   position: relative;
   z-index: 10;
 }
@@ -665,7 +638,7 @@ body {
 .brand-footer {
   font-size: 1.2rem;
   font-weight: 800;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 0.75rem;
 }
 
@@ -717,7 +690,7 @@ body {
   max-width: 1240px;
   margin: 0 auto;
   padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--card-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -841,13 +814,9 @@ body {
 }
 .more-btn:hover { color: var(--text-primary); border-color: var(--line-strong, var(--card-border)); }
 .hub-footer { margin-top: auto; border-top: 1px solid var(--card-border); }
-[data-theme="light"] body {
-  background: #fff;
-  background-image: radial-gradient(circle at 50% 0%, rgba(0,0,0,0.02) 0%, transparent 60%);
+[data-theme="light"] .bg-glow {
+  background: radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.03) 0%, transparent 55%);
 }
-[data-theme="light"] .search-bar input {
-  background: #f8fafc; color: #0f172a; border-color: #e2e8f0;
-}
-[data-theme="light"] .hero-desc { color: #334155; }
+[data-theme="light"] .btn-clear { background: rgba(15, 23, 42, 0.08); color: var(--text-secondary); }
 html { color-scheme: dark; }
 [data-theme="light"] { color-scheme: light; }

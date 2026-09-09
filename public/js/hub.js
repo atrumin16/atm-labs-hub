@@ -24,7 +24,8 @@
 
   var HIDDEN_HOSTS = {
     'trujillomingorance.com': 1,
-    'labs.trujillomingorance.com': 1
+    'labs.trujillomingorance.com': 1,
+    'rocky.trujillomingorance.com': 1
   };
 
   var state = {
@@ -45,7 +46,8 @@
     var host = professionalHost(project && project.domain) || professionalHost(project && project.url);
     if (!host || HIDDEN_HOSTS[host]) return false;
     var id = project.id || '';
-    if (id === 'domain-root' || id === 'atm-labs-hub') return false;
+    if (id === 'domain-root' || id === 'atm-labs-hub' || id === 'rocky-setter') return false;
+    if (host === 'rocky.trujillomingorance.com') return false;
     return true;
   }
 
@@ -133,7 +135,7 @@
     var grid = $('projectsGrid');
     if (grid) renderSkeletons(grid, 5);
     try {
-      var res = await fetch('/api/projects?v=hub3', { headers: { Accept: 'application/json' } });
+      var res = await fetch('/api/projects?v=hub5', { headers: { Accept: 'application/json' } });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       var data = await res.json();
       state.projects = (Array.isArray(data.projects) ? data.projects : []).filter(isOwnProject);

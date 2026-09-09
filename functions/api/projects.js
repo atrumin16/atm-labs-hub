@@ -71,18 +71,6 @@ const CATALOG = {
     stack: ['Technical Docs', 'DevOps', 'Edge'],
     cta: 'Explorar Guías'
   },
-  'rocky-setter': {
-    id: 'rocky-setter',
-    title: 'Sitio Web de Rocky (Setter Inglés)',
-    description: 'Ficha veterinaria, galería táctil, microchip y vCard de emergencia.',
-    url: 'https://rocky.trujillomingorance.com',
-    domain: 'rocky.trujillomingorance.com',
-    alt: '',
-    category: 'apps',
-    keywords: 'rocky setter perro veterinaria microchip',
-    stack: ['Pages Functions', 'vCard', 'Touch UI'],
-    cta: 'Conocer a Rocky'
-  },
   'atm-labs-hub': {
     id: 'atm-labs-hub',
     title: 'ATM Labs Hub (Portal Central)',
@@ -110,7 +98,7 @@ const CATALOG = {
   },
 };
 
-const HIDDEN = new Set(['neurolock', 'manual-de-bloqueo', 'domain-root', 'atm-labs-hub']);
+const HIDDEN = new Set(['neurolock', 'manual-de-bloqueo', 'domain-root', 'atm-labs-hub', 'rocky-setter']);
 const FEATURED_ORDER = [
   'trujillo-ai-studio',
   'rewrite-ai',
@@ -140,7 +128,7 @@ function polish(item) {
   if (!item) return null;
   const domain = ownHost(item.domain || item.url);
   if (!domain) return null;
-  if (domain === 'trujillomingorance.com' || domain === 'labs.trujillomingorance.com') return null;
+  if (domain === 'trujillomingorance.com' || domain === 'labs.trujillomingorance.com' || domain === 'rocky.trujillomingorance.com') return null;
   const featured = FEATURED_ORDER.indexOf(item.id) !== -1 || !!item.featured;
   return Object.assign({}, item, {
     domain,
@@ -194,7 +182,7 @@ function jsonResponse(body, status) {
 export async function onRequestGet(context) {
   const { request, env } = context;
   const cache = caches.default;
-  const cacheKey = new Request(new URL('/api/projects?v=hub3', request.url), { method: 'GET' });
+  const cacheKey = new Request(new URL('/api/projects?v=hub5', request.url), { method: 'GET' });
 
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
