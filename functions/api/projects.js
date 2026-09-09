@@ -185,7 +185,7 @@ function jsonResponse(body, status) {
     status: status || 200,
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
-      'Cache-Control': 'public, s-maxage=3600, max-age=60',
+      'Cache-Control': 'public, max-age=30, s-maxage=120',
       'Access-Control-Allow-Origin': 'https://labs.trujillomingorance.com'
     }
   });
@@ -194,7 +194,7 @@ function jsonResponse(body, status) {
 export async function onRequestGet(context) {
   const { request, env } = context;
   const cache = caches.default;
-  const cacheKey = new Request(new URL('/api/projects?v=featured-2', request.url), { method: 'GET' });
+  const cacheKey = new Request(new URL('/api/projects?v=hub3', request.url), { method: 'GET' });
 
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
