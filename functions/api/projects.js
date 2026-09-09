@@ -184,7 +184,7 @@ function jsonResponse(body, status) {
     status: status || 200,
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
-      'Cache-Control': 'public, max-age=30, s-maxage=120',
+      'Cache-Control': 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800',
       'Access-Control-Allow-Origin': 'https://labs.trujillomingorance.com'
     }
   });
@@ -193,44 +193,13 @@ function jsonResponse(body, status) {
 export async function onRequestGet(context) {
   const { request, env } = context;
   const cache = caches.default;
-  const cacheKey = new Request(new URL('/api/projects?v=hub6', request.url), { method: 'GET' });
+  const cacheKey = new Request(new URL('/api/projects?v=hub7', request.url), { method: 'GET' });
 
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
 
-  const token = env.CF_API_TOKEN || env.CLOUDFLARE_API_TOKEN || '';
-  const accountId = env.CF_ACCOUNT_ID || env.CLOUDFLARE_ACCOUNT_ID || ACCOUNT_ID;
-
-  let projects = fallbackCatalog();
-  let source = 'fallback';
-
-  if (token) {
-    try {
-      const res = await fetch(
-        'https://api.cloudflare.com/client/v4/accounts/' + encodeURIComponent(accountId) + '/pages/projects',
-        { headers: { Authorization: 'Bearer ' + token } }
-      );
-      if (res.ok) {
-        const data = await res.json();
-        const rows = Array.isArray(data.result) ? data.result : [];
-        const mapped = rows.map(mergeProject).filter(Boolean);
-        const extras = [CATALOG['trujillo-ai-studio']].map(polish).filter(Boolean);
-        const seen = new Set(mapped.map((p) => p.id));
-        extras.forEach((item) => {
-          if (item && !seen.has(item.id) && !seen.has(item.domain)) {
-            mapped.push(Object.assign({ source: 'catalog' }, item));
-            seen.add(item.id);
-          }
-        });
-        if (mapped.length) {
-          projects = mapped.sort(byRank);
-          source = 'cloudflare';
-        }
-      }
-    } catch (err) {
-      source = 'fallback';
-    }
-  }
+  const projects = fallbackCatalog();
+  const source = 'catalog';
 
   const response = jsonResponse({
     success: true,
