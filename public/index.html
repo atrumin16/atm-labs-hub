@@ -3,21 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ATM Software Labs | Ecosistema de Proyectos & Subdominios</title>
+  <title>ATM Software Labs | Ecosistema de Proyectos &amp; Subdominios</title>
   <meta name="description" content="Portal central de aplicaciones, servicios de IA, ciberseguridad, documentación técnica y proyectos de Alberto Trujillo Mingorance.">
   <meta name="theme-color" content="#080c14">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%230078d4'/><text x='50' y='68' font-size='55' font-family='sans-serif' font-weight='800' fill='white' text-anchor='middle'>A</text></svg>">
+  <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Cascadia+Code:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-
-  <!-- Background Decorative Gradient -->
   <div class="bg-glow" aria-hidden="true"></div>
 
-  <!-- Header -->
   <header class="hub-header">
     <div class="header-inner">
       <a href="https://labs.trujillomingorance.com" class="brand">
@@ -27,291 +22,55 @@
           <span class="brand-sub">trujillomingorance.com</span>
         </div>
       </a>
-
       <div class="header-right">
-        <div class="system-status" title="Todos los servicios operativos en Cloudflare Global Edge">
+        <div class="system-status" title="Servicios en Cloudflare Global Edge">
           <span class="status-dot"></span>
           <span class="status-text">Sistemas Operativos</span>
         </div>
         <a href="https://alberto.trujillomingorance.com" class="btn-author" target="_blank" rel="noopener">
           <span>Autor</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
         </a>
       </div>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="hub-container">
-
-    <!-- Hero Section -->
+  <main class="hub-container" id="top">
     <section class="hero">
       <div class="hero-chip">
         <span class="hero-chip-badge">CENTRAL HUB</span>
-        <span class="hero-chip-text">Directorio de Servicios & Subdominios</span>
+        <span class="hero-chip-text">Directorio de Servicios &amp; Subdominios</span>
       </div>
       <h1 class="hero-title">Ecosistema Tecnológico <span class="gradient-text">Trujillo Mingorance</span></h1>
-      <p class="hero-desc">Accede a todas las plataformas, inteligencias artificiales, herramientas de ciberseguridad y guías técnicas desarrolladas e implementadas en producción.</p>
+      <p class="hero-desc">Accede a las plataformas, inteligencias artificiales, herramientas de ciberseguridad y guías técnicas en producción. El catálogo se descubre solo desde Cloudflare Pages.</p>
 
-      <!-- Search & Filters -->
       <div class="search-filter-box">
         <div class="search-bar">
           <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          <input type="text" id="projectSearch" placeholder="Buscar proyecto, tecnología o subdominio (ej: AI, DNS, Guías)..." autocomplete="off" spellcheck="false" />
-          <button id="clearSearch" class="btn-clear" aria-label="Limpiar búsqueda" style="display: none;">&times;</button>
+          <input type="text" id="projectSearch" placeholder="Buscar proyecto, tecnología o subdominio..." autocomplete="off" spellcheck="false">
+          <button id="clearSearch" class="btn-clear hidden" aria-label="Limpiar búsqueda" type="button">&times;</button>
         </div>
-
         <div class="filter-chips" role="tablist" aria-label="Categorías de proyectos">
-          <button class="filter-chip active" data-filter="all">Todos <span class="chip-count">7</span></button>
-          <button class="filter-chip" data-filter="ai">IA & LLMs</button>
-          <button class="filter-chip" data-filter="security">Ciberseguridad</button>
-          <button class="filter-chip" data-filter="engineering">Ingeniería & Docs</button>
-          <button class="filter-chip" data-filter="apps">Web Apps & Cripto</button>
+          <button class="filter-chip active" data-filter="all" type="button">Todos <span class="chip-count" id="chip-count-all">—</span></button>
+          <button class="filter-chip" data-filter="ai" type="button">IA &amp; LLMs</button>
+          <button class="filter-chip" data-filter="security" type="button">Ciberseguridad</button>
+          <button class="filter-chip" data-filter="engineering" type="button">Ingeniería &amp; Docs</button>
+          <button class="filter-chip" data-filter="apps" type="button">Web Apps &amp; Cripto</button>
         </div>
       </div>
     </section>
 
-    <!-- Apps & Subdomains Grid -->
-    <section class="app-grid" id="projectsGrid">
+    <section class="app-grid" id="projectsGrid" aria-live="polite"></section>
 
-      <!-- Card 1: Trujillo AI Studio -->
-      <article class="app-card" data-category="ai" data-keywords="ia ai groq qwen vision chatbot deepseek models studio multimodal chat inteligente">
-        <div class="card-glow ai-glow"></div>
-        <div class="card-header">
-          <div class="app-icon ai-icon">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3h-1v1a4 4 0 0 1-4 4h0a4 4 0 0 1-4-4v-1H7a3 3 0 0 1-3-3v-2a3 3 0 0 1 3-3h1V6a4 4 0 0 1 4-4Z"/><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M9.5 15a3.5 3.5 0 0 0 5 0"/></svg>
-          </div>
-          <div class="card-badges">
-            <span class="subdomain-tag">ai.trujillomingorance.com</span>
-            <span class="status-tag active">Online</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <h2 class="card-title">Trujillo AI Studio</h2>
-          <p class="card-description">Asistente de Inteligencia Artificial multimodal de ultra-alta velocidad impulsado por Groq LPU. Soporte completo de visión Qwen 3.6, razonamiento de código GPT-OSS y streaming en tiempo real.</p>
-          <div class="tech-stack">
-            <span class="tech-pill">Groq LPU (Sub-100ms)</span>
-            <span class="tech-pill">Qwen 3.6 Vision</span>
-            <span class="tech-pill">GPT-OSS 120B</span>
-            <span class="tech-pill">Cloudflare Worker</span>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="subdomain-alt">Alt: groq.trujillomingorance.com</span>
-          <a href="https://ai.trujillomingorance.com" class="btn-launch" target="_blank" rel="noopener" aria-label="Lanzar Trujillo AI Studio">
-            <span>Abrir IA</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
-          </a>
-        </div>
-      </article>
-
-      <!-- Card 2: FocusGuard -->
-      <article class="app-card" data-category="security" data-keywords="focusguard adshield dns adblock seguridad zero-trust malware filtrado control parental router">
-        <div class="card-glow sec-glow"></div>
-        <div class="card-header">
-          <div class="app-icon sec-icon">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <div class="card-badges">
-            <span class="subdomain-tag">focusguard.trujillomingorance.com</span>
-            <span class="status-tag active">Online</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <h2 class="card-title">FocusGuard SaaS & AdShield</h2>
-          <p class="card-description">Plataforma empresarial y doméstica de filtrado DNS Zero-Trust. Bloquea anuncios intrusivos, telemetría, malware y rastreadores a nivel de red para todos tus dispositivos sin software invasivo.</p>
-          <div class="tech-stack">
-            <span class="tech-pill">DNS-over-HTTPS</span>
-            <span class="tech-pill">Zero-Trust AdShield</span>
-            <span class="tech-pill">Cloudflare D1 & KV</span>
-            <span class="tech-pill">TypeScript</span>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="subdomain-alt">Alt: adshield.focusguard...</span>
-          <a href="https://focusguard.trujillomingorance.com" class="btn-launch" target="_blank" rel="noopener" aria-label="Lanzar FocusGuard">
-            <span>Abrir FocusGuard</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
-          </a>
-        </div>
-      </article>
-
-      <!-- Card 3: Portfolio Profesional -->
-      <article class="app-card" data-category="engineering" data-keywords="portfolio alberto cv trayectoria sysadmin ciberseguridad linux devops ingeniero redes">
-        <div class="card-glow eng-glow"></div>
-        <div class="card-header">
-          <div class="app-icon eng-icon">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-          </div>
-          <div class="card-badges">
-            <span class="subdomain-tag">alberto.trujillomingorance.com</span>
-            <span class="status-tag active">Online</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <h2 class="card-title">Portfolio Profesional</h2>
-          <p class="card-description">Perfil técnico y trayectoria de Alberto Trujillo. Administración de sistemas críticos (SysAdmin), ingeniería de seguridad ofensiva/defensiva, proyectos destacados, certificaciones y formulario de contacto directo.</p>
-          <div class="tech-stack">
-            <span class="tech-pill">SysAdmin Linux</span>
-            <span class="tech-pill">Cloudflare Pages</span>
-            <span class="tech-pill">Vite Production</span>
-            <span class="tech-pill">Security Eng</span>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="subdomain-alt">alberto.pages.dev</span>
-          <a href="https://alberto.trujillomingorance.com" class="btn-launch" target="_blank" rel="noopener" aria-label="Ver Portfolio Profesional">
-            <span>Ver Portfolio</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
-          </a>
-        </div>
-      </article>
-
-      <!-- Card 4: Trujillo Engineering Guides -->
-      <article class="app-card" data-category="engineering" data-keywords="guias guides documentacion arquitectura devops cloudflare workers linux docker servidores tutoriales">
-        <div class="card-glow guide-glow"></div>
-        <div class="card-header">
-          <div class="app-icon guide-icon">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
-          </div>
-          <div class="card-badges">
-            <span class="subdomain-tag">guides.trujillomingorance.com</span>
-            <span class="status-tag active">Online</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <h2 class="card-title">Trujillo Engineering Guides</h2>
-          <p class="card-description">Base de conocimiento técnico y arquitecturas de producción. Guías paso a paso de optimización perimetral, Cloudflare Workers, despliegues de alta disponibilidad, Docker y hardening de servidores.</p>
-          <div class="tech-stack">
-            <span class="tech-pill">Technical Docs</span>
-            <span class="tech-pill">Production Arch</span>
-            <span class="tech-pill">DevOps</span>
-            <span class="tech-pill">Performance</span>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="subdomain-alt">Alt: guias.trujillomingorance.com</span>
-          <a href="https://guides.trujillomingorance.com" class="btn-launch" target="_blank" rel="noopener" aria-label="Abrir Guías Técnicas">
-            <span>Explorar Guías</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
-          </a>
-        </div>
-      </article>
-
-      <!-- Card 5: Rocky Dog Website -->
-      <article class="app-card" data-category="apps" data-keywords="rocky setter ingles perro mascota microchip galeria veterinaria contacto vcard fotos">
-        <div class="card-glow rocky-glow"></div>
-        <div class="card-header">
-          <div class="app-icon rocky-icon">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 0 0 9-9c0-4.97-4.03-9-9-9s-9 4.03-9 9a9 9 0 0 0 9 9Z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
-          </div>
-          <div class="card-badges">
-            <span class="subdomain-tag">rocky.trujillomingorance.com</span>
-            <span class="status-tag active">Online</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <h2 class="card-title">Sitio Web de Rocky (Setter Inglés)</h2>
-          <p class="card-description">Portal interactivo oficial de Rocky. Incluye galería fotográfica adaptada para pantallas táctiles, ficha médica veterinaria con código de microchip, contacto de emergencia y descarga de tarjeta digital vCard.</p>
-          <div class="tech-stack">
-            <span class="tech-pill">Touch Navigation</span>
-            <span class="tech-pill">Pages Functions</span>
-            <span class="tech-pill">vCard Card</span>
-            <span class="tech-pill">Glassmorphism</span>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="subdomain-alt">rocky-setter.pages.dev</span>
-          <a href="https://rocky.trujillomingorance.com" class="btn-launch" target="_blank" rel="noopener" aria-label="Visitar Web de Rocky">
-            <span>Conocer a Rocky</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
-          </a>
-        </div>
-      </article>
- 
-       <!-- Card: BitPulse -->
-       <article class="app-card" data-category="apps" data-keywords="bitpulse bitcoin btc crypto mempool blockchain satoshi sat halving fear greed dashboard red mercado cripto finanzas">
-         <div class="card-glow crypto-glow"></div>
-         <div class="card-header">
-           <div class="app-icon crypto-icon">
-             <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-               <circle cx="12" cy="12" r="10"/>
-               <path d="M16 8h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4"/>
-               <path d="M10 12h5"/>
-               <path d="M12 6v2"/>
-               <path d="M12 16v2"/>
-             </svg>
-           </div>
-           <div class="card-badges">
-             <span class="subdomain-tag">atrumin16.github.io/BitPulse</span>
-             <span class="status-tag active">Online</span>
-           </div>
-         </div>
-         <div class="card-body">
-           <h2 class="card-title">BitPulse — Bitcoin Command Center</h2>
-           <p class="card-description">Panel de telemetría y monitorización en tiempo real de la red Bitcoin. Métricas de mempool, estimación de comisiones sat/vB, altura de bloque, cuenta atrás del halving, índice Fear & Greed y convertidor universal.</p>
-           <div class="tech-stack">
-             <span class="tech-pill">Mempool API</span>
-             <span class="tech-pill">On-Chain Metrics</span>
-             <span class="tech-pill">Zero-Backend</span>
-             <span class="tech-pill">Vanilla JS</span>
-           </div>
-         </div>
-         <div class="card-footer">
-           <span class="subdomain-alt">atrumin16.github.io/BitPulse</span>
-           <a href="https://atrumin16.github.io/BitPulse/" class="btn-launch" target="_blank" rel="noopener" aria-label="Abrir BitPulse">
-             <span>Abrir Dashboard</span>
-             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
-           </a>
-         </div>
-       </article>
-
-       <!-- Card 6: ATM Labs Hub (Self) -->
-      <article class="app-card current-hub" data-category="engineering" data-keywords="labs atm hub central directorio portal inicio trujillomingorance">
-        <div class="card-glow hub-glow"></div>
-        <div class="card-header">
-          <div class="app-icon hub-icon">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-          </div>
-          <div class="card-badges">
-            <span class="subdomain-tag">labs.trujillomingorance.com</span>
-            <span class="status-tag core">Portal Principal</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <h2 class="card-title">ATM Labs Hub (Portal Central)</h2>
-          <p class="card-description">El panel central de enrutamiento y orquestación para todo el dominio trujillomingorance.com. Centraliza accesos, monitorización de estado y direccionamiento perimetral para todos los servicios.</p>
-          <div class="tech-stack">
-            <span class="tech-pill">Central Hub</span>
-            <span class="tech-pill">Edge Gateway</span>
-            <span class="tech-pill">DNS Router</span>
-            <span class="tech-pill">100% Mobile</span>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="subdomain-alt">trujillomingorance.com</span>
-          <a href="#top" class="btn-launch secondary" aria-label="Ya estás en ATM Labs Hub">
-            <span>Estás aquí</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
-          </a>
-        </div>
-      </article>
-
-    </section>
-
-    <!-- No results container -->
-    <div id="noResults" class="no-results" style="display: none;">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="m8 11 6 0"/></svg>
+    <div id="noResults" class="no-results hidden">
       <h3>No se encontraron proyectos</h3>
-      <p>No hay resultados que coincidan con "<span id="noResultsQuery"></span>". Prueba con otros términos como <em>ai</em>, <em>dns</em> o <em>guias</em>.</p>
-      <button class="btn-reset" id="btnResetFilters">Ver todos los proyectos</button>
+      <p>No hay resultados que coincidan con “<span id="noResultsQuery"></span>”.</p>
+      <button class="btn-reset" id="btnResetFilters" type="button">Ver todos los proyectos</button>
     </div>
 
-    <!-- Infrastructure Metrics Strip -->
     <section class="metrics-strip">
       <div class="metric-item">
-        <div class="metric-num">6</div>
-        <div class="metric-label">Subdominios Activos</div>
+        <div class="metric-num" id="metric-count">—</div>
+        <div class="metric-label">Servicios descubiertos</div>
       </div>
       <div class="metric-item">
         <div class="metric-num">&lt; 15ms</div>
@@ -326,10 +85,8 @@
         <div class="metric-label">Seguridad Perimetral</div>
       </div>
     </section>
-
   </main>
 
-  <!-- Footer -->
   <footer class="hub-footer">
     <div class="footer-inner">
       <div class="footer-col">
@@ -340,16 +97,15 @@
         <div class="footer-heading">Subdominios Principales</div>
         <ul class="footer-links">
           <li><a href="https://ai.trujillomingorance.com" target="_blank" rel="noopener">ai.trujillomingorance.com</a></li>
-          <li><a href="https://focusguard.trujillomingorance.com" target="_blank" rel="noopener">focusguard.trujillomingorance.com</a></li>
+          <li><a href="https://rewrite.trujillomingorance.com" target="_blank" rel="noopener">rewrite.trujillomingorance.com</a></li>
           <li><a href="https://guides.trujillomingorance.com" target="_blank" rel="noopener">guides.trujillomingorance.com</a></li>
-          <li><a href="https://alberto.trujillomingorance.com" target="_blank" rel="noopener">alberto.trujillomingorance.com</a></li>
-          <li><a href="https://rocky.trujillomingorance.com" target="_blank" rel="noopener">rocky.trujillomingorance.com</a></li>
+          <li><a href="https://focusguard.trujillomingorance.com" target="_blank" rel="noopener">focusguard.trujillomingorance.com</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <div class="footer-heading">Red & Seguridad</div>
+        <div class="footer-heading">Red &amp; Seguridad</div>
         <ul class="footer-links">
-          <li><span class="footer-badge">Cloudflare Pages & Workers</span></li>
+          <li><span class="footer-badge">Cloudflare Pages &amp; Workers</span></li>
           <li><span class="footer-badge">SSL/TLS HSTS Preloaded</span></li>
           <li><span class="footer-badge">Edge Caching Activo</span></li>
         </ul>
@@ -361,97 +117,6 @@
     </div>
   </footer>
 
-  <!-- Search and filter interaction script -->
-  <script>
-    (function() {
-      const searchInput = document.getElementById('projectSearch');
-      const clearBtn = document.getElementById('clearSearch');
-      const filterChips = document.querySelectorAll('.filter-chip');
-      const cards = document.querySelectorAll('.app-card');
-      const noResults = document.getElementById('noResults');
-      const noResultsQuery = document.getElementById('noResultsQuery');
-      const btnReset = document.getElementById('btnResetFilters');
-
-      let currentFilter = 'all';
-
-      // Keyboard shortcut: Ctrl + K or / to focus search
-      window.addEventListener('keydown', function(e) {
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-          e.preventDefault();
-          searchInput.focus();
-          searchInput.select();
-        } else if (e.key === '/' && document.activeElement !== searchInput) {
-          e.preventDefault();
-          searchInput.focus();
-          searchInput.select();
-        }
-      });
-
-      function filterProjects() {
-        const query = (searchInput.value || '').trim().toLowerCase();
-        let visibleCount = 0;
-
-        if (query.length > 0) {
-          clearBtn.style.display = 'flex';
-        } else {
-          clearBtn.style.display = 'none';
-        }
-
-        cards.forEach(card => {
-          const category = card.dataset.category || '';
-          const keywords = (card.dataset.keywords || '').toLowerCase();
-          const title = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
-          const desc = (card.querySelector('.card-description')?.textContent || '').toLowerCase();
-          const subdomain = (card.querySelector('.subdomain-tag')?.textContent || '').toLowerCase();
-
-          const matchesCategory = (currentFilter === 'all') || (category === currentFilter);
-          const matchesQuery = !query ||
-            title.includes(query) ||
-            desc.includes(query) ||
-            keywords.includes(query) ||
-            subdomain.includes(query);
-
-          if (matchesCategory && matchesQuery) {
-            card.style.display = 'flex';
-            visibleCount++;
-          } else {
-            card.style.display = 'none';
-          }
-        });
-
-        if (visibleCount === 0) {
-          noResults.style.display = 'block';
-          noResultsQuery.textContent = query || currentFilter;
-        } else {
-          noResults.style.display = 'none';
-        }
-      }
-
-      searchInput.addEventListener('input', filterProjects);
-
-      clearBtn.addEventListener('click', function() {
-        searchInput.value = '';
-        searchInput.focus();
-        filterProjects();
-      });
-
-      filterChips.forEach(chip => {
-        chip.addEventListener('click', function() {
-          filterChips.forEach(c => c.classList.remove('active'));
-          this.classList.add('active');
-          currentFilter = this.dataset.filter;
-          filterProjects();
-        });
-      });
-
-      btnReset.addEventListener('click', function() {
-        searchInput.value = '';
-        currentFilter = 'all';
-        filterChips.forEach(c => c.classList.remove('active'));
-        document.querySelector('.filter-chip[data-filter="all"]')?.classList.add('active');
-        filterProjects();
-      });
-    })();
-  </script>
+  <script src="js/hub.js"></script>
 </body>
 </html>

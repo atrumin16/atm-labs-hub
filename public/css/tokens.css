@@ -1,0 +1,36 @@
+/* Trujillo AI shared design tokens — aligned with ai.trujillomingorance.com */
+:root {
+  --bg: #080c14;
+  --bg-elev: #0d1522;
+  --bg-card: rgba(15, 22, 36, 0.78);
+  --bg-color: #080c14;
+  --card-bg: rgba(15, 22, 36, 0.78);
+  --card-hover: rgba(22, 32, 52, 0.9);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-border-hover: rgba(0, 120, 212, 0.45);
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.14);
+  --text: #f8fafc;
+  --text-primary: #f8fafc;
+  --muted: #94a3b8;
+  --text-secondary: #94a3b8;
+  --dim: #64748b;
+  --text-muted: #64748b;
+  --white: #ffffff;
+  --accent: #0078d4;
+  --accent-cyan: #38bdf8;
+  --green: #107c41;
+  --success: #107c41;
+  --success-bg: rgba(16, 124, 65, 0.12);
+  --purple: #818cf8;
+  --indigo: #6366f1;
+  --font: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-main: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif: Newsreader, "Iowan Old Style", Georgia, serif;
+  --mono: "Cascadia Code", "IBM Plex Mono", ui-monospace, monospace;
+  --font-mono: "Cascadia Code", "IBM Plex Mono", ui-monospace, monospace;
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --radius-sm: 6px;
+  --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}

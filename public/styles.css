@@ -14,8 +14,8 @@
   --success-bg: rgba(16, 124, 65, 0.12);
   --purple: #818cf8;
   --indigo: #6366f1;
-  --font-main: 'Segoe UI', 'Aptos', -apple-system, BlinkMacSystemFont, 'Inter', Roboto, sans-serif;
-  --font-mono: 'Cascadia Code', 'Consolas', 'JetBrains Mono', monospace;
+  --font-main: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Cascadia Code", "IBM Plex Mono", ui-monospace, monospace;
   --radius-lg: 16px;
   --radius-md: 10px;
   --radius-sm: 6px;
@@ -773,4 +773,25 @@ body {
   .card-badges { align-items: flex-start; }
   .card-footer { flex-direction: column; align-items: stretch; gap: 0.75rem; }
   .btn-launch { justify-content: center; width: 100%; }
+}
+
+.hidden { display: none !important; }
+
+.skeleton-card {
+  min-height: 220px;
+  pointer-events: none;
+}
+.skeleton-line {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+  background-size: 200% 100%;
+  animation: skeleton 1.2s ease-in-out infinite;
+  margin-bottom: 12px;
+}
+.skeleton-wide { width: 70%; height: 18px; }
+.skeleton-short { width: 40%; }
+@keyframes skeleton {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
 }

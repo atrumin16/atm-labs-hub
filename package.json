@@ -1,14 +1,10 @@
 {
   "name": "atm-labs-hub",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "Central ecosystem hub and service directory for trujillomingorance.com",
-  "type": "module",
   "scripts": {
-    "deploy": "npx wrangler pages deploy public --project-name=atm-labs-hub"
-  },
-  "devDependencies": {
-    "wrangler": "^4.123.0"
+    "deploy": "npx wrangler pages deploy public --project-name=atm-labs-hub --commit-dirty=true"
   },
   "author": "Alberto Trujillo Mingorance",
   "license": "MIT"
